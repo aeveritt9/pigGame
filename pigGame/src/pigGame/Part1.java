@@ -6,10 +6,6 @@ import javax.swing.JOptionPane;
 //If both are the same and not 1s player must roll again.
 //Else allow player to either roll again or hold and add score to their total
 
-//To do: 1.Change rolls to be shown as text not #
-//2. Change roll again in joption to have "roll" and "hold" as opposed to yes and no
-//3. Add: if a dice is 1 then end turn and reset turn score to 0
-
 public class Part1 {
 	static int playerTotal=0;
 	static int compTotal=0;
@@ -35,6 +31,7 @@ public class Part1 {
 		while(playerTotal<100 && compTotal<100){
 			playerTotal=playerTurn(playerTotal,compTotal);
 			if(playerTotal<100){
+				JOptionPane.showMessageDialog(null, "The computer will roll");
 				compTotal=compTurn(playerTotal,compTotal);
 			}
 		}
@@ -59,33 +56,38 @@ public class Part1 {
 			int dice_2=lastRoll[1];
 			rollTotal=dice_1+dice_2;
 			turnTotal=turnTotal+rollTotal;
+			String dice_1_word;
+			String dice_2_word;
 			
 		if(dice_1==1||dice_2==1){
 			if(dice_1==dice_2){
 				playerScore=0;
 				JOptionPane.showMessageDialog(null, " You rolled two ones :( !!! \n Your score has been reset to 0 and your turn is over"+"\n The current score is: \n Player: "+ (playerScore)+ "\t Computer: "+ compScore,title ,JOptionPane.DEFAULT_OPTION);
 				pturn=0;
+				//player loses overall score and turn is done
 			}
 			else{
-				JOptionPane.showMessageDialog(null," You rolled "+ dice_1 + " and " + dice_2 + "\n Your turn is over and you've lost your turn score! :(\t\t\t\t\t\t"+"\n The current score is:\n Player: "+ (playerScore)+ "\t Computer: "+ compScore,title,JOptionPane.DEFAULT_OPTION);
+				//player rolls a 1 and loses turn score, ending turn
+				JOptionPane.showMessageDialog(null," You rolled: "+ int_to_String(dice_1) + " and " + int_to_String(dice_2) + "\n Your turn is over and you've lost your turn score! :(\t\t\t\t\t\t"+"\n The current score is:\n Player: "+ (playerScore)+ "\t Computer: "+ compScore,title,JOptionPane.DEFAULT_OPTION);
 				turnTotal=0;
 					pturn=0;
 			}
 		}
 		else if(dice_1==dice_2){
-			JOptionPane.showMessageDialog(null," You rolled "+ dice_1 + " and " + dice_2 + "\n You must roll again!\t\t\t\t\t"+"\n Your score so far this turn is: "+turnTotal+"\n The current score is:\n Player: "+ (playerScore)+ "\t Computer: "+ compScore,title ,JOptionPane.DEFAULT_OPTION);
+			JOptionPane.showMessageDialog(null," You rolled: "+ int_to_String(dice_1) + " and " + int_to_String(dice_2) + "\n You must roll again!\t\t\t\t\t"+"\n Your score so far this turn is: "+turnTotal+"\n The current score is:\n Player: "+ (playerScore)+ "\t Computer: "+ compScore,title ,JOptionPane.DEFAULT_OPTION);
 			if(playerScore>=100)
 				pturn=0;
-			//pturn stays at 1
+			//pturn stays at 1, they must roll again
 		}
 		else{
-			option= JOptionPane.showOptionDialog(null," You rolled "+ dice_1 + " and " + dice_2 + "\n Your score so far this turn is: "+turnTotal+"\n The current score is:\n Player: "+ (playerScore)+ "\t Computer: "+ compScore,title,JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null,new String[]{"Roll", "Hold"}, "default");
+			option= JOptionPane.showOptionDialog(null," You rolled: "+ int_to_String(dice_1) + " and " + int_to_String(dice_2) + "\n Your score so far this turn is: "+turnTotal+"\n The current score is:\n Player: "+ (playerScore)+ "\t Computer: "+ compScore,title,JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null,new String[]{"Roll", "Hold"}, "default");
 			if(playerScore>=100)
 				pturn=0;
 			else if(option==0){
-				//pturn stays at 1
+				//player rolls again
 			}
 			else{
+				//player turn over, turnTotal added to previous score
 				playerScore=playerScore+turnTotal;
 				pturn=0;
 			}
@@ -99,9 +101,10 @@ public class Part1 {
 		int turnTotal=0;
 		int turnsTaken=0;
 		int cturn=1;		
+		//computer will decide to reroll based on their total amount of rolls so far in the turn and their turn score
 
 		while(cturn==1 && compScore<100 && turnsTaken<4 && turnTotal<30){
-			JOptionPane.showMessageDialog(null, "The computer will roll");
+			
 			int[] lastRoll = diceRoll();
 			int dice_1=lastRoll[0];
 			int dice_2=lastRoll[1];
@@ -116,12 +119,12 @@ public class Part1 {
 			}
 			else{
 				turnTotal=0;
-				JOptionPane.showMessageDialog(null," Computer rolled "+ dice_1 + " and " + dice_2 + "\n Their turn is over and they lost their turn score!"+ "\n The current score is: \n Player: "+ playerScore+ "\t Computer: "+ compScore,title ,JOptionPane.DEFAULT_OPTION );
+				JOptionPane.showMessageDialog(null," Computer rolled: "+ int_to_String(dice_1) + " and " + int_to_String(dice_2) + "\n Their turn is over and they lost their turn score!"+ "\n The current score is: \n Player: "+ playerScore+ "\t Computer: "+ compScore,title ,JOptionPane.DEFAULT_OPTION );
 				cturn=0;
 			}
 		}
 		else if(dice_1==dice_2){
-			JOptionPane.showMessageDialog(null," Computer rolled "+ dice_1 + " and " + dice_2 + "\n They must roll again!"+ "\n Their score so far this turn is: "+turnTotal+"\n The current score is: \n Player: "+ playerScore+ "\t Computer: "+ compScore,title ,JOptionPane.DEFAULT_OPTION );
+			JOptionPane.showMessageDialog(null," Computer rolled: "+ int_to_String(dice_1) + " and " + int_to_String(dice_2) + "\n They must roll again!"+ "\n Their score so far this turn is: "+turnTotal+"\n The current score is: \n Player: "+ playerScore+ "\t Computer: "+ compScore,title ,JOptionPane.DEFAULT_OPTION );
 			if(turnsTaken==4){
 				//do nothing
 			}
@@ -130,7 +133,7 @@ public class Part1 {
 			}
 		}
 		else{
-			JOptionPane.showMessageDialog(null," Computer rolled "+ dice_1 + " and " + dice_2 + "\n Their score so far this turn is: "+turnTotal+"\n The current score is: \n Player: "+ playerScore+ "\t Computer: "+ compScore,title ,JOptionPane.DEFAULT_OPTION);
+			JOptionPane.showMessageDialog(null," Computer rolled: "+ int_to_String(dice_1) + " and " + int_to_String(dice_2) + "\n Their score so far this turn is: "+turnTotal+"\n The current score is: \n Player: "+ playerScore+ "\t Computer: "+ compScore,title ,JOptionPane.DEFAULT_OPTION);
 			turnsTaken++;
 			if((compScore+turnTotal)>=100)
 				cturn=0;
@@ -149,6 +152,30 @@ public class Part1 {
 		int diceRollTurn[] = {roll_1, roll_2};
 		return diceRollTurn;
 		
+	}
+	
+	static String int_to_String(int diceVal){
+		String diceWord;
+		if(diceVal==1){
+			diceWord="One";
+		}
+		else if (diceVal==2){
+			diceWord="Two";
+		}
+		else if (diceVal==3){
+			diceWord="Three";
+		}
+		else if (diceVal==4){
+			diceWord="Four";
+		}
+		else if (diceVal==5){
+			diceWord="Five";
+		}
+		else{
+			diceWord="Six";
+		}
+		
+		return diceWord;
 	}
 	
 }
