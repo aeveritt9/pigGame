@@ -1,0 +1,2 @@
+# pigGame
+This is the classic dice game "Pig" built in java for one player and a computer. It uses JOptionPane for all user interaction and the computer uses programmed AI to make competitive game decisions.
